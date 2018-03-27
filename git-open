@@ -49,12 +49,19 @@ fi
 if [ "${1:-}" -a -e "${1:-}" ]
 then
     path=$1
-    br=$(git branch | \
-        awk '
-            /^\*/{
-                print $2
-            }')
-    url=$url/blob/$br/$path
+    if [ $USE_HASH ]
+    then
+        # hash
+        treeish=$(git log -1 --format=%H)
+    else
+        # branch
+        treeish=$(git branch | \
+            awk '
+                /^\*/{
+                    print $2
+                }')
+    fi
+    url=$url/blob/$treeish/$path
 fi
 
 echo $url
