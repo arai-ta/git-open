@@ -16,9 +16,11 @@ url=$(git remote -v | \
     awk '
         $3 ~ /fetch/{
             url=$2;
-            sub(/:/,"/",url);
-            sub(/git@/,"https://",url);
-            sub(/\.git$/,"",url);
+            if (url !~ /^https?:/) {
+                sub(/:/, "/", url);
+                sub(/git@/, "https://", url);
+                sub(/\.git$/, "", url);
+            }
             print url
         }')
 
