@@ -12,6 +12,22 @@ then
     exit 1
 fi
 
+DO_COPY=
+USE_HASH=
+while getopts ph OPT
+do
+    case $OPT in
+        p)  DO_COPY=1
+            shift ;;
+        h)  USE_HASH=1
+            shift ;;
+        *) cat <<USAGE
+Usage: git open [-p] [-h] [path/to/file]
+USAGE
+            exit ;;
+    esac
+done
+
 url=$(git remote -v | \
     awk '
         $3 ~ /fetch/{
@@ -42,4 +58,10 @@ then
 fi
 
 echo $url
-open $url
+if [ $DO_COPY ]
+then
+    echo $url | pbcopy
+    echo "Copy url to clipboard!" >&2
+else
+    open $url
+fi
