@@ -19,6 +19,12 @@ url=$(git remote -v | \
             print url
         }')
 
+if [ -z "$url" ]
+then
+    echo "No remote found."
+    exit 2
+fi
+
 if [ "${1:-}" -a -e "${1:-}" ]
 then
     path=$1
