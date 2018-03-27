@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+set -u
+#set -x
+
+if ! git show >/dev/null
+then
+    exit 1
+fi
+
+url=$(git remote -v | \
+    awk '
+        $3 ~ /fetch/{
+            url=$2;
+            sub(/:/,"/",url);
+            sub(/git@/,"https://",url);
+            sub(/\.git$/,"",url);
+            print url
+        }')
+
+if [ "${1:-}" -a -e "${1:-}" ]
+then
+    path=$1
+    br=$(git branch | \
+        awk '
+            /^\*/{
+                print $2
+            }')
+    url=$url/blob/$br/$path
+fi
+
+echo $url
+open $url
