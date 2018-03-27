@@ -13,14 +13,17 @@ then
 fi
 
 DO_COPY=
-USE_HASH=
+TREEISH=branch
 for arg in $@
 do case $arg in
     -p | --copy )
         DO_COPY=1
         shift ;;
     -h | --hash )
-        USE_HASH=1
+        TREEISH=hash
+        shift ;;
+    -l | --long-hash )
+        TREEISH=longhash
         shift ;;
     esac
 done
@@ -46,18 +49,21 @@ fi
 if [ -e "${1:-}" ]
 then
     path=$(git rev-parse --show-prefix)$1
-    if [ $USE_HASH ]
-    then
-        # hash
-        treeish=$(git log -1 --format=%H)
-    else
-        # branch
-        treeish=$(git branch | \
-            awk '
-                /^\*/{
-                    print $2
-                }')
-    fi
+    case $TREEISH in
+        hash )
+            treeish=$(git log -1 --format=%h)
+            ;;
+        longhash )
+            treeish=$(git log -1 --format=%H)
+            ;;
+        branch )
+            treeish=$(git branch | \
+                awk '
+                    /^\*/{
+                        print $2
+                    }')
+            ;;
+    esac
     url=$url/blob/$treeish/$path
 fi
 
