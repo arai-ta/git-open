@@ -45,7 +45,7 @@ fi
 
 if [ -e "${1:-}" ]
 then
-    path=$1
+    path=$(git rev-parse --show-prefix)$1
     if [ $USE_HASH ]
     then
         # hash
