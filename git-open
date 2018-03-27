@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# @(#) Tiny script that opens github repository in the browser.
+#      https://github.com/arai-ta/git-open
 
 set -e
 set -u
