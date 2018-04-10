@@ -60,7 +60,11 @@ then
             treeish=$(git branch | \
                 awk '
                     /^\*/{
-                        print $2
+                        if (/HEAD detached/) {
+                            sub(/\)/,"",$5); print $5;
+                        } else {
+                            print $2
+                        }
                     }')
             ;;
     esac
