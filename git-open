@@ -7,15 +7,24 @@ set -e
 set -u
 #set -x
 
-if ! git show >/dev/null
-then
-    exit 1
-fi
+usage() {
+    cat <<HELP
+usage: git open [<options>] [<path>]
+
+    -p, --copy          Copy URL to clipboard instead of opening bworser.
+    -h, --hash          Use abbreviated commit hash as a part of URL, instead of branch name.
+    -l, --long-hash     Use full commit hash as a part of URL, instead of branch name.
+
+HELP
+}
 
 DO_COPY=
 TREEISH=branch
 for arg in $@
 do case $arg in
+    -h | --help )
+        usage
+        exit 1 ;;
     -p | --copy )
         DO_COPY=1
         shift ;;
