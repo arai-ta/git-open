@@ -32,10 +32,16 @@ url=$(git remote -v | \
     awk '
         $3 ~ /fetch/{
             url=$2;
-            if (url !~ /^https?:/) {
-                sub(/:/, "/", url);
-                sub(/git@/, "https://", url);
+            if (url ~ /^https?:/) {
+                # http protocol
+                # do nothing
+            } else if (url ~ /^ssh:/) {
+                # ssh protocol
+                sub(/ssh:/, "https:", url);
+                sub(/git@/, "", url);
                 sub(/\.git$/, "", url);
+            } else {
+                # unknown
             }
             print url
         }')
