@@ -50,7 +50,10 @@ url=$(git remote -v | \
                 sub(/git@/, "", url);
                 sub(/\.git$/, "", url);
             } else {
-                # unknown
+                # user@server
+                sub(/:/, "/", url);
+                sub(/git@/, "https://", url);
+                sub(/\.git$/, "", url);
             }
             print url
         }')
