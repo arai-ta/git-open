@@ -12,7 +12,7 @@ usage() {
 usage: git open [<options>] [<path>]
 
     -p, --copy          Copy URL to clipboard instead of opening bworser.
-    -h, --hash          Use abbreviated commit hash as a part of URL, instead of branch name.
+    -s, --short-hash    Use abbreviated commit hash as a part of URL, instead of branch name.
     -l, --long-hash     Use full commit hash as a part of URL, instead of branch name.
 
 HELP
@@ -28,7 +28,7 @@ do case $arg in
     -p | --copy )
         DO_COPY=1
         shift ;;
-    -h | --hash )
+    -s | --short-hash )
         TREEISH=hash
         shift ;;
     -l | --long-hash )
